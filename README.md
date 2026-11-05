@@ -16,6 +16,27 @@ npm run dev
 
 Le serveur indique ensuite une URL locale et une URL réseau. Ouvrez l'URL dans un navigateur, puis ajoutez `/player` ou `/controller` selon la configuration de routage affichée par Soundworks.
 
+## Déploiement
+
+GitHub Pages ne peut héberger que des fichiers statiques. Cette application utilise
+également un serveur Node.js et des WebSockets pour synchroniser les players : le
+serveur doit donc être déployé sur Render (ou un autre hébergeur Node).
+
+1. Créez un **Web Service** Render connecté à ce dépôt. Le fichier `render.yaml`
+   fournit les commandes de build et de démarrage (`npm ci && npm run build`,
+   puis `npm start`).
+2. Après le premier déploiement, notez l'URL Render, par exemple
+   `https://sync-audio-manif.onrender.com`.
+3. Remplacez `YOUR-RENDER-SERVICE` par cette URL dans
+   `public-site/index.html`, puis poussez la modification.
+4. Dans GitHub, ouvrez **Settings > Pages**, choisissez **GitHub Actions** comme
+   source. Le workflow `.github/workflows/deploy-pages.yml` publiera la page
+   d'accès.
+
+Les liens `/controller` et `/player` doivent rester sur l'URL Render : ils
+contiennent la configuration Soundworks générée par le serveur et utilisent sa
+connexion WebSocket.
+
 Le fichier WAV d'exemple est déjà présent à cet emplacement :
 
 ```text
