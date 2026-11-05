@@ -105,7 +105,7 @@ async function main($container) {
     render(html`
     <div class="app">
       <header>
-        <p class="eyebrow">Soundworks · Controller</p>
+        <p class="eyebrow">Faisons entendre nos ${playerCount} voix !</p>
         <h1>Audio Controller</h1>
         <p>Le controller joue aussi le son et pilote tous les players connectés.</p>
       </header>

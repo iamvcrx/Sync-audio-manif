@@ -132,8 +132,8 @@ async function main($container) {
     render(html`
     <div class="app">
       <header>
-        <p class="eyebrow">manifestons ensemble ${index}</p>
-        <h1>Player ${index}</h1>
+        <p class="eyebrow">Faisons entendre nos ${playerCount} voix !</p>
+        <h1>Voix ${index}</h1>
         <p>Votre appareil va servir d'enceinte synchronisée avec le reste de la manifestation. Veuillez retirer le mode silencieux et monter le volume.</p>
         <p>En cas de problème (pas de son, décalage temporel...), rechargez la page.</p>
       </header>
