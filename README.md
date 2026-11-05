@@ -3,7 +3,7 @@
 Application Soundworks avec deux rôles :
 
 - `player` : chaque appareil possède un volume et un mute local indépendants ;
-- `controller` : sélectionne un fichier, contrôle play/pause, mute tous les players et règle le volume master.
+- `controller` : joue le fichier sélectionné, contrôle play/pause, mute tous les players et règle le volume master.
 
 Le déclenchement n'envoie pas un ordre « joue maintenant ». Le controller écrit un temps futur dans l'horloge synchronisée par `@soundworks/plugin-sync`; chaque player convertit ce temps dans son horloge audio locale et programme un `AudioBufferSourceNode`.
 
@@ -51,5 +51,5 @@ Le plugin `platform-init` initialise l'AudioContext après le geste utilisateur 
 
 - `src/server.js` : serveur Soundworks, état global, plugins `sync` et `checkin`.
 - `src/state-descriptions/global.js` : état partagé du transport audio et du master.
-- `src/clients/player.js` : chargement du WAV, graphe audio et contrôles individuels.
-- `src/clients/controller.js` : commandes globales.
+- `src/clients/player.js` : chargement du fichier, graphe audio et contrôle du volume individuel.
+- `src/clients/controller.js` : lecture synchronisée et commandes globales.

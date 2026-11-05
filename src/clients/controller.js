@@ -23,6 +23,60 @@ async function main($container) {
   const sync = await client.pluginManager.get('sync');
   const global = await client.stateManager.attach('global');
   const audit = await client.getAuditState();
+  const output = audioContext.createGain();
+  output.connect(audioContext.destination);
+  let buffer;
+  let loadedFile;
+  let source;
+  let lastCommandId = global.get('playbackCommandId');
+
+  const setGain = () => {
+    output.gain.value = global.get('masterMute') ? 0 : global.get('masterVolume');
+  };
+  const stopSource = () => {
+    if (!source) {
+      return;
+    }
+    source.stop();
+    source.disconnect();
+    source = null;
+  };
+  const scheduleTrigger = () => {
+    if (!buffer || global.get('playbackState') !== 'playing') {
+      return;
+    }
+    stopSource();
+    const localStart = sync.getLocalTime(global.get('playbackStartTime'));
+    const now = audioContext.currentTime;
+    const offset = Math.max(0, now - localStart + global.get('playbackPosition'));
+    if (offset >= buffer.duration) {
+      return;
+    }
+    const scheduledSource = audioContext.createBufferSource();
+    scheduledSource.buffer = buffer;
+    scheduledSource.connect(output);
+    scheduledSource.start(Math.max(now, localStart), offset);
+    source = scheduledSource;
+    scheduledSource.onended = () => {
+      if (source === scheduledSource) {
+        source = null;
+      }
+    };
+  };
+  const loadBuffer = async (fileName) => {
+    if (loadedFile === fileName) {
+      return;
+    }
+    stopSource();
+    buffer = null;
+    const response = await fetch(`/assets/${encodeURIComponent(fileName)}`);
+    if (!response.ok) {
+      throw new Error(`Impossible de charger ${fileName} (${response.status})`);
+    }
+    buffer = await audioContext.decodeAudioData(await response.arrayBuffer());
+    loadedFile = fileName;
+    scheduleTrigger();
+  };
   const filesResponse = await fetch('/audio-files.json');
   if (!filesResponse.ok) {
     throw new Error(`Impossible de charger la liste audio (${filesResponse.status})`);
@@ -37,7 +91,7 @@ async function main($container) {
       <header>
         <p class="eyebrow">Soundworks · Controller</p>
         <h1>Audio Controller</h1>
-        <p>Les commandes sont appliquées à tous les players connectés.</p>
+        <p>Le controller joue aussi le son et pilote tous les players connectés.</p>
       </header>
       <section class="card">
         <h2>Lecture</h2>
@@ -94,6 +148,23 @@ async function main($container) {
   };
 
   global.onUpdate((updates) => {
+    if ('selectedFile' in updates) {
+      loadBuffer(updates.selectedFile).catch((error) => console.error(error));
+    }
+    if ('playbackCommandId' in updates && updates.playbackCommandId !== lastCommandId) {
+      lastCommandId = updates.playbackCommandId;
+      if (global.get('playbackState') === 'playing') {
+        scheduleTrigger();
+      } else {
+        stopSource();
+      }
+    }
+    if ('playbackState' in updates && updates.playbackState === 'paused') {
+      stopSource();
+    }
+    if ('masterVolume' in updates || 'masterMute' in updates) {
+      setGain();
+    }
     if ('masterVolume' in updates || 'masterMute' in updates || 'selectedFile' in updates || 'playbackState' in updates) {
       renderApp();
     }
@@ -104,6 +175,8 @@ async function main($container) {
       renderApp();
     }
   });
+  await loadBuffer(global.get('selectedFile'));
+  setGain();
   renderApp();
 }
 

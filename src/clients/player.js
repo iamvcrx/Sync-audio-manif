@@ -34,12 +34,11 @@ async function main($container) {
   let buffer;
   let loadedFile;
   let source;
-  let localMute = false;
   let localVolume = 1;
   let lastCommandId = global.get('playbackCommandId');
 
   const setGains = () => {
-    playerGain.gain.value = localMute ? 0 : localVolume;
+    playerGain.gain.value = localVolume;
     masterGain.gain.value = global.get('masterMute') ? 0 : global.get('masterVolume');
   };
   const stopSource = () => {
@@ -142,7 +141,6 @@ async function main($container) {
         <label>Volume individuel
           <input id="volume" type="range" min="0" max="1" step="0.01" .value="${localVolume}" />
         </label>
-        <button id="mute">${localMute ? 'Réactiver mon son' : 'Muter mon son'}</button>
         <p class="status">${buffer ? 'Fichier prêt' : 'Chargement du fichier…'}</p>
       </section>
     </div>
@@ -150,11 +148,6 @@ async function main($container) {
     $container.querySelector('#volume').addEventListener('input', (event) => {
       localVolume = Number(event.target.value);
       setGains();
-    });
-    $container.querySelector('#mute').addEventListener('click', (event) => {
-      localMute = !localMute;
-      setGains();
-      event.currentTarget.textContent = localMute ? 'Réactiver mon son' : 'Muter mon son';
     });
   };
 
