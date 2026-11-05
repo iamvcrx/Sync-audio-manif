@@ -37,9 +37,22 @@ async function main($container) {
     if (!source) {
       return;
     }
-    source.stop();
-    source.disconnect();
+    const currentSource = source;
     source = null;
+    currentSource.stop();
+    currentSource.disconnect();
+  };
+  const finishPlayback = async () => {
+    if (source !== null || global.get('playbackState') !== 'playing') {
+      return;
+    }
+
+    await global.set({
+      playbackState: 'paused',
+      playbackPosition: 0,
+      playbackStartTime: -1,
+      playbackCommandId: global.get('playbackCommandId') + 1,
+    });
   };
   const scheduleTrigger = () => {
     if (!buffer || global.get('playbackState') !== 'playing') {
@@ -60,6 +73,7 @@ async function main($container) {
     scheduledSource.onended = () => {
       if (source === scheduledSource) {
         source = null;
+        finishPlayback().catch((error) => console.error(error));
       }
     };
   };
