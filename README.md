@@ -37,6 +37,17 @@ Les liens `/controller` et `/player` doivent rester sur l'URL Render : ils
 contiennent la configuration Soundworks générée par le serveur et utilisent sa
 connexion WebSocket.
 
+### Protéger le controller
+
+Le rôle `controller` est protégé par une authentification HTTP. Sur Render,
+ajoutez les variables d'environnement suivantes dans **Environment** :
+
+- `CONTROLLER_LOGIN` : le nom d'utilisateur ;
+- `CONTROLLER_PASSWORD` : le mot de passe.
+
+Ces valeurs ne sont pas présentes dans le dépôt GitHub. Render redéploie le
+service après leur ajout. Les players restent accessibles sans mot de passe.
+
 Le fichier WAV d'exemple est déjà présent à cet emplacement :
 
 ```text

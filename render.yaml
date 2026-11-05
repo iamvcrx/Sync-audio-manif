@@ -8,3 +8,7 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 20
+      - key: CONTROLLER_LOGIN
+        sync: false
+      - key: CONTROLLER_PASSWORD
+        sync: false

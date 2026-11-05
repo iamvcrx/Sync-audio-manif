@@ -9,6 +9,15 @@ import ServerPluginSync from '@soundworks/plugin-sync/server.js';
 import globalDescription from './state-descriptions/global.js';
 
 const config = loadConfig(process.env.ENV, import.meta.url);
+const controllerLogin = process.env.CONTROLLER_LOGIN;
+const controllerPassword = process.env.CONTROLLER_PASSWORD;
+
+if (!controllerLogin || !controllerPassword) {
+  throw new Error('CONTROLLER_LOGIN and CONTROLLER_PASSWORD must be configured');
+}
+
+config.env.auth.login = controllerLogin;
+config.env.auth.password = controllerPassword;
 const server = new Server(config);
 
 server.pluginManager.register('sync', ServerPluginSync);
