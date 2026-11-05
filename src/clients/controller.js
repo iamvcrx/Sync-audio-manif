@@ -145,12 +145,12 @@ async function main($container) {
       const now = sync.getSyncTime();
       const currentlyPlaying = global.get('playbackState') === 'playing';
       const currentPosition = currentlyPlaying
-        ? Math.max(0, now - global.get('playbackStartTime'))
+        ? Math.min(buffer?.duration ?? Infinity, Math.max(0, now - global.get('playbackStartTime')))
         : global.get('playbackPosition');
       await global.set({
         playbackState: currentlyPlaying ? 'paused' : 'playing',
         playbackPosition: currentPosition,
-        playbackStartTime: currentlyPlaying ? global.get('playbackStartTime') : now + 0.5 - currentPosition,
+        playbackStartTime: currentlyPlaying ? -1 : now + 0.5 - currentPosition,
         playbackCommandId: global.get('playbackCommandId') + 1,
       });
     });
