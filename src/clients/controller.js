@@ -39,6 +39,7 @@ async function main($container) {
     }
     const currentSource = source;
     source = null;
+    currentSource.onended = null;
     currentSource.stop();
     currentSource.disconnect();
   };
@@ -61,14 +62,15 @@ async function main($container) {
     stopSource();
     const localStart = sync.getLocalTime(global.get('playbackStartTime'));
     const now = audioContext.currentTime;
-    const offset = Math.max(0, now - localStart + global.get('playbackPosition'));
+    const startAt = Math.max(now, localStart);
+    const offset = Math.max(0, startAt - localStart + global.get('playbackPosition'));
     if (offset >= buffer.duration) {
       return;
     }
     const scheduledSource = audioContext.createBufferSource();
     scheduledSource.buffer = buffer;
     scheduledSource.connect(output);
-    scheduledSource.start(Math.max(now, localStart), offset);
+    scheduledSource.start(startAt, offset);
     source = scheduledSource;
     scheduledSource.onended = () => {
       if (source === scheduledSource) {

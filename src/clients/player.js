@@ -45,9 +45,11 @@ async function main($container) {
     if (!source) {
       return;
     }
-    source.stop();
-    source.disconnect();
+    const currentSource = source;
     source = null;
+    currentSource.onended = null;
+    currentSource.stop();
+    currentSource.disconnect();
   };
   const scheduleTrigger = () => {
     if (!buffer || global.get('playbackState') !== 'playing') {
@@ -57,14 +59,15 @@ async function main($container) {
     const startTime = global.get('playbackStartTime');
     const localStart = sync.getLocalTime(startTime);
     const now = audioContext.currentTime;
-    const offset = Math.max(0, now - localStart + global.get('playbackPosition'));
+    const startAt = Math.max(now, localStart);
+    const offset = Math.max(0, startAt - localStart + global.get('playbackPosition'));
     if (offset >= buffer.duration) {
       return;
     }
     const scheduledSource = audioContext.createBufferSource();
     scheduledSource.buffer = buffer;
     scheduledSource.connect(playerGain);
-    scheduledSource.start(Math.max(now, localStart), offset);
+    scheduledSource.start(startAt, offset);
     source = scheduledSource;
     scheduledSource.onended = () => {
       if (source === scheduledSource) {
