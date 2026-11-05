@@ -22,7 +22,9 @@ async function main($container) {
   const sync = await client.pluginManager.get('sync');
   const checkin = await client.pluginManager.get('checkin');
   const global = await client.stateManager.attach('global');
+  const audit = await client.getAuditState();
   const index = checkin.getIndex();
+  let playerCount = audit.get('numClients').player || 0;
 
   const output = audioContext.createGain();
   const playerGain = audioContext.createGain();
@@ -132,7 +134,7 @@ async function main($container) {
     render(html`
     <div class="app">
       <header>
-        <p class="eyebrow">Faisons entendre nos voix !</p>
+        <p class="eyebrow">Faisons entendre nos ${playerCount} voix !</p>
         <h1>Voix ${index}</h1>
         <p>Votre appareil va servir d'enceinte synchronisée avec le reste de la manifestation. Veuillez retirer le mode silencieux et monter le volume.</p>
         <p>En cas de problème (pas de son, décalage temporel...), rechargez la page.</p>
@@ -159,6 +161,12 @@ async function main($container) {
 
   global.onUpdate((updates) => {
     if ('selectedFile' in updates || 'playbackState' in updates || 'playbackCommandId' in updates) {
+      renderApp();
+    }
+  });
+  audit.onUpdate((updates) => {
+    if ('numClients' in updates) {
+      playerCount = updates.numClients.player || 0;
       renderApp();
     }
   });
