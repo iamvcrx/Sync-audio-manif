@@ -3,17 +3,37 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Soundworks Audio Manif</title>
+    <meta name="description" content="Une expérience sonore collective et synchronisée.">
+    <title>Audio Manif — Installation sonore synchronisée</title>
     <style>
-      body { max-width: 42rem; margin: 4rem auto; padding: 0 1.25rem; font: 1rem/1.5 system-ui, sans-serif; }
-      a { display: inline-block; margin: .5rem .5rem .5rem 0; padding: .7rem 1rem; border-radius: .4rem; background: #111; color: #fff; text-decoration: none; }
+      :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: #101216; color: #f5f7fb; }
+      * { box-sizing: border-box; }
+      body { min-height: 100vh; margin: 0; background: radial-gradient(circle at 50% 0, #26324a, #101216 60%); }
+      main { width: min(100% - 32px, 680px); margin: 0 auto; padding: 12vh 0; }
+      .eyebrow { color: #91a9ff; text-transform: uppercase; letter-spacing: .14em; font-size: .73rem; font-weight: 700; }
+      h1 { margin: 8px 0 16px; font-size: clamp(2.8rem, 11vw, 6rem); line-height: .95; letter-spacing: -.07em; }
+      .intro { max-width: 40rem; color: #c5ccdb; font-size: 1.15rem; line-height: 1.6; }
+      .card { margin-top: 32px; padding: 24px; border: 1px solid #343b4b; border-radius: 18px; background: rgba(26, 30, 40, .9); box-shadow: 0 16px 50px #0003; }
+      .card p { color: #aab1c1; line-height: 1.55; }
+      .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+      a { display: inline-block; padding: 11px 14px; border: 1px solid #7188f7; border-radius: 10px; background: #6078ee; color: #fff; text-decoration: none; }
+      a:hover { background: #7188f7; }
+      code { color: #c6d0ff; }
     </style>
   </head>
   <body>
-    <h1>Soundworks Audio Manif</h1>
-    <p>Le serveur de synchronisation est hébergé séparément sur Render.</p>
-    <a href="https://sync-audio-manif.onrender.com/controller">Ouvrir le controller</a>
-    <a href="https://sync-audio-manif.onrender.com/player">Ouvrir un player</a>
-    <p>Remplacez <code>YOUR-RENDER-SERVICE</code> par le nom réel de votre service Render.</p>
+    <main>
+      <p class="eyebrow">Installation sonore collective</p>
+      <h1>Audio Manif</h1>
+      <p class="intro">Une expérience d’écoute distribuée : plusieurs appareils jouent le même morceau au même moment, sous le contrôle d’un controller.</p>
+      <section class="card">
+        <h2>Choisir un rôle</h2>
+        <p>Utilisez le controller pour choisir un fichier et piloter la lecture. Ouvrez un player sur chaque téléphone participant.</p>
+        <div class="links">
+          <a href="https://sync-audio-manif.onrender.com/controller">Ouvrir le controller</a>
+          <a href="https://sync-audio-manif.onrender.com/player">Ouvrir un player</a>
+        </div>
+      </section>
+    </main>
   </body>
 </html>

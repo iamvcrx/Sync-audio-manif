@@ -1,5 +1,5 @@
-name: sync-audio-manif
-author: soundworks
+name: Audio Manif
+author: Installation sonore synchronisée
 clients:
   player:
     runtime: browser
