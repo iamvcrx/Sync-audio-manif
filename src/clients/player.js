@@ -36,6 +36,7 @@ async function main($container) {
   let source;
   let localVolume = 1;
   let lastCommandId = global.get('playbackCommandId');
+  let renderApp = () => {};
 
   const setGains = () => {
     playerGain.gain.value = localVolume;
@@ -109,6 +110,7 @@ async function main($container) {
       }
       buffer = await audioContext.decodeAudioData(await response.arrayBuffer());
       loadedFile = fileName;
+      renderApp();
       if (global.get('playbackState') === 'playing') {
         scheduleTrigger();
       }
@@ -124,24 +126,25 @@ async function main($container) {
     console.error(error);
   }
 
-  const renderApp = () => {
+  renderApp = () => {
     const playbackState = global.get('playbackState');
     const selectedFile = global.get('selectedFile');
     render(html`
     <div class="app">
       <header>
-        <p class="eyebrow">Soundworks · Player ${index}</p>
-        <h1>Player ${index + 1}</h1>
-        <p>Le controller contrôle la lecture pour tous les players.</p>
+        <p class="eyebrow">manifestons ensemble ${index}</p>
+        <h1>Player ${index}</h1>
+        <p>Votre appareil va servir d'enceinte synchronisée avec le reste de la manifestation. Veuillez retirer le mode silencieux et monter le volume.</p>
+        <p>En cas de problème (pas de son, décalage temporel...), rechargez la page.</p>
       </header>
       <section class="card">
         <h2>État général</h2>
         <p class="playback-state">${playbackState === 'playing' ? '▶ Lecture en cours' : 'Ⅱ En pause'}</p>
-        <p class="track-name">${selectedFile}</p>
+        <p class="track-name"> Vous allez diffuser l'audio : ${selectedFile}</p>
       </section>
       <section class="card">
-        <h2>Mon écoute</h2>
-        <label>Volume individuel
+        <h2>Volume personnel</h2>
+        <label>
           <input id="volume" type="range" min="0" max="1" step="0.01" .value="${localVolume}" />
         </label>
         <p class="status">${buffer ? 'Fichier prêt' : 'Chargement du fichier…'}</p>

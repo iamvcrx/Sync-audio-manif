@@ -1,5 +1,5 @@
-name: Audio Manif
-author: Installation sonore synchronisée
+name: Manifestation Sonore
+author: Synchronisons nos revendications !
 clients:
   player:
     runtime: browser
