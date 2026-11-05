@@ -1,0 +1,8 @@
+name: sync-audio-manif
+author: soundworks
+clients:
+  player:
+    runtime: browser
+    default: true
+  controller:
+    runtime: browser
