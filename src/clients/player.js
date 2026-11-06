@@ -132,7 +132,8 @@ async function main($container) {
     const playbackState = global.get('playbackState');
     const selectedFile = global.get('selectedFile');
     render(html`
-    <div class="app">
+    <div class="app player-app">
+      <img class="share-qr" src="/assets/website-player-qr.png" alt="Scannez pour ouvrir un player" />
       <header>
         <p class="eyebrow">Faisons entendre nos ${playerCount} voix !</p>
         <h1>Voix ${index+1}</h1>

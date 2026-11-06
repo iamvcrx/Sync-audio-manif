@@ -8,6 +8,18 @@
 * { box-sizing: border-box; }
 body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 50% 0, #26324a, #101216 55%); }
 .app { width: min(100% - 32px, 620px); margin: 0 auto; padding: 48px 0; }
+.player-app { position: relative; }
+.share-qr {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: clamp(72px, 18vw, 128px);
+  height: auto;
+  border: 4px solid white;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 8px 24px #0006;
+}
 header { margin-bottom: 28px; }
 .eyebrow { color: #91a9ff; text-transform: uppercase; letter-spacing: .14em; font-size: .73rem; font-weight: 700; }
 h1 { margin: 8px 0; font-size: clamp(2.4rem, 8vw, 4.5rem); letter-spacing: -.06em; }
