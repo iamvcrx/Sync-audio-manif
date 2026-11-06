@@ -48,10 +48,10 @@ ajoutez les variables d'environnement suivantes dans **Environment** :
 Ces valeurs ne sont pas présentes dans le dépôt GitHub. Render redéploie le
 service après leur ajout. Les players restent accessibles sans mot de passe.
 
-Le fichier WAV d'exemple est déjà présent à cet emplacement :
+Un fichier audio d'exemple est déjà présent à cet emplacement :
 
 ```text
-public/assets/gospel-95BPM-Gm.wav
+public/assets/The Hanging Tree - Hunger Games.mp3
 ```
 
 Le controller détecte automatiquement les fichiers `.wav`, `.mp3`, `.ogg`, `.m4a` et `.aac` placés dans `public/assets`.

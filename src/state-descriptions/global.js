@@ -19,7 +19,7 @@ export default {
   },
   selectedFile: {
     type: 'string',
-    default: 'gospel-95BPM-Gm.wav',
+    default: 'The Hanging Tree - Hunger Games.mp3',
   },
   playbackState: {
     type: 'string',
