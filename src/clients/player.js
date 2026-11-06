@@ -37,6 +37,7 @@ async function main($container) {
   let loadedFile;
   let source;
   let localVolume = 1;
+  let qrExpanded = false;
   let lastCommandId = global.get('playbackCommandId');
   let renderApp = () => {};
 
@@ -133,7 +134,15 @@ async function main($container) {
     const selectedFile = global.get('selectedFile');
     render(html`
     <div class="app player-app">
-      <img class="share-qr" src="/assets/website-player-qr.png" alt="Scannez pour ouvrir un player" />
+      <button class="share-qr-button" aria-label="Agrandir le QR code">
+        <img class="share-qr" src="/assets/website-player-qr.png" alt="Scannez pour ouvrir un player" />
+      </button>
+      ${qrExpanded ? html`
+        <div class="qr-modal" role="dialog" aria-modal="true" aria-label="QR code agrandi">
+          <button class="qr-close" aria-label="Fermer le QR code agrandi">&times;</button>
+          <img class="qr-modal-image" src="/assets/website-player-qr.png" alt="Scannez pour ouvrir un player" />
+        </div>
+      ` : ''}
       <header>
         <p class="eyebrow">Faisons entendre nos ${playerCount} voix !</p>
         <h1>Voix ${index+1}</h1>
@@ -154,6 +163,23 @@ async function main($container) {
       </section>
     </div>
     `, $container);
+    $container.querySelector('.share-qr-button').addEventListener('click', () => {
+      qrExpanded = true;
+      renderApp();
+    });
+    if (qrExpanded) {
+      const modal = $container.querySelector('.qr-modal');
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          qrExpanded = false;
+          renderApp();
+        }
+      });
+      modal.querySelector('.qr-close').addEventListener('click', () => {
+        qrExpanded = false;
+        renderApp();
+      });
+    }
     $container.querySelector('#volume').addEventListener('input', (event) => {
       localVolume = Number(event.target.value);
       setGains();
